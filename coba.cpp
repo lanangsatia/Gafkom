@@ -131,13 +131,15 @@ void displayName(){
     //glPushMatrix();
     //glTranslatef(0,-80,0);
     //glScalef(0.7,1,0);
+    //glColor3ub(255,255,255);
+    //kotak(237-xi,180-yi,740-237,313-180);
     HurufL();HurufA();HurufN();HurufA2();HurufN2();HurufG();
+
     //glPopMatrix();
 }
 };
 
-/*class Planet:
-    public LanangName{
+class Planet: public LanangName{
 public:
     void displayPlanet(){
         Matahari();
@@ -161,9 +163,9 @@ private:
     void Mata(){
             circle(10);
             glRotatef((float)glfwGetTime()*50, 0,0,1);
-            //kotak(-12.5,-12.5,25,25);
+            kotak(-12.5,-12.5,25,25);
             glRotatef(45,0,0,1);
-            //kotak(-12.5,-12.5,25,25);
+            kotak(-12.5,-12.5,25,25);
     }
 
     void Matahari(){
@@ -171,13 +173,13 @@ private:
         for(int i=100;i<=2000;i+=10){
             glPushMatrix();
                 glRotatef((float)glfwGetTime()*time,0,0,1);
-                glTranslatef(i,i,0);
+                glTranslatef(0,i,0);
                 Mata();
             glPopMatrix();
             time+=10;
         }
-    }};
-*/
+    }
+};
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -216,6 +218,8 @@ void setup_viewport(GLFWwindow* window)
 
 
 LanangName lanang;
+Planet pla;
+
 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
     lanang.doIfPicked(xpos, ypos);
 }
@@ -243,8 +247,9 @@ int main(void)
         setup_viewport(window);
         //display();
 
-
+        pla.displayPlanet();
         lanang.displayName();
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();
