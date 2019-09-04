@@ -312,16 +312,16 @@ void setup_viewport(GLFWwindow* window)
       int xx=-1000;              //lebar
       int yy=-1000;
       int red=0,green=0,blue=0;
-    for (int j=yy;j<=1000;j+=20){
-        for(int i=xx;i<=1000;i+=20){
-            glPushMatrix();
-            glColor3ub(red+j,green+i,blue+i+j);
-            glRotatef(glfwGetTime()*-10,0,0,1);  //kecepatan
-            kotak(i,j,10,10);
-            glPopMatrix();
-
-        }
-    }
+//    for (int j=yy;j<=1000;j+=20){
+//        for(int i=xx;i<=1000;i+=20){
+//            glPushMatrix();
+//            glColor3ub(red+j,green+i,blue+i+j);
+//            glRotatef(glfwGetTime()*-10,0,0,1);  //kecepatan
+//            kotak(i,j,10,10);
+//            glPopMatrix();
+//
+//        }
+//    }
     for (int j=yy;j<=1000;j+=20){
         for(int i=xx;i<=1000;i+=20){
             glPushMatrix();
