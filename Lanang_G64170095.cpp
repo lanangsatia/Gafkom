@@ -1,3 +1,9 @@
+//Nama : Lanang Satia Aji
+//NIM  : G64170095
+//Ada interaksi mouse di objek nama nya
+
+
+
 #define TRUE 1
 #define FALSE 0
 #include <GLFW/glfw3.h>
