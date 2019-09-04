@@ -2,8 +2,6 @@
 //NIM  : G64170095
 //Ada interaksi mouse di objek nama nya
 
-
-
 #define TRUE 1
 #define FALSE 0
 #include <GLFW/glfw3.h>
@@ -279,68 +277,7 @@ void displayName(){
 }
 };
 
-class Planet: public LanangName{
-public:
-    void displayPlanet(){
-        Matahari();
-    }
-    int rot = 10;
-    int press = FALSE;
-private:
-    void circle(float size){
-        int N = 180;
-        float pX, pY;
-        glBegin(GL_POLYGON);
-        for(int i = 0; i < N; i++)
-        {
-            pX = sin(i*2*3.14 / N);
-            pY = cos(i*2*3.14 / N);
-            glVertex2f(pX * size, pY * size);
-        }
-        glEnd();
-    }
 
-    void Mata(){
-        if(redK2 <= 1)
-            redK2 = 242;
-        if(blueK2 <= 1)
-            blueK2 = 182;
-        if(greenK2 <= 1)
-            greenK2 = 158;
-        blueK2-=20;
-        redK2-=20;
-        greenK2-=20;
-
-        if(redK <= 1)
-            redK = 242;
-        if(blueK <= 1)
-            blueK = 182;
-        if(greenK <= 1)
-            greenK = 158;
-        blueK-=20;
-        redK-=20;
-        greenK-=20;
-            //circle(10);
-            glRotatef((float)glfwGetTime()*100, 0,0,1);
-            glColor3ub(redK,greenK,blueK);
-            kotak(-12.5,-12.5,20,20);
-            glRotatef(45,0,0,1);
-            glColor3ub(redK2,greenK2,blueK2);
-            kotak(-12.5,-12.5,20,20);
-    }
-
-    void Matahari(){
-        int time = 10;
-        for(int i=100;i<=2000;i+=6){
-            glPushMatrix();
-                glRotatef((float)glfwGetTime()*time,0,0,1);
-                glTranslatef(0,i,0);
-                Mata();
-            glPopMatrix();
-            time+=10;
-        }
-    }
-};
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
@@ -425,15 +362,11 @@ void setup_viewport(GLFWwindow* window)
             glRotatef(30,0,0,1);
             cube1(i,j);
             glPopMatrix();
-
         }
     }
-
 }
 
-
 LanangName lanang;
-Planet pla;
 
 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
     lanang.doIfPicked(xpos, ypos);
@@ -462,7 +395,6 @@ int main(void)
         setup_viewport(window);
 
         background();
-        //pla.displayPlanet();
         lanang.displayName();
 
         glfwSwapBuffers(window);
