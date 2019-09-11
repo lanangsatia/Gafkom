@@ -1,3 +1,10 @@
+//
+//  main.c
+//  openGL
+//
+//  Created by Auzi Asfarian on 20/08/19.
+//  Copyright © 2019 Auzi Asfarian. All rights reserved.
+//
 #define GLFW_SILENCE_DEPRECATION true
 #define TRUE 1
 #define FALSE 0
@@ -8,14 +15,27 @@
 
 class Rectangle{
 public:
-    double x=300, y=300;
+    double x=200, y=200;
+    double prevY = 0;
     int red = 255, green = 255, blue = 255;
     int size = 20;
+
     int isSelected = FALSE;
     int isDragged = FALSE;
+    int isWillDrop = FALSE;
+    double acceleration = 0;
 
     void display()
     {
+        if(isWillDrop == TRUE && isDragged == FALSE){
+            if (y < prevY)
+                y+=acceleration;
+                acceleration++;
+            if(y >= prevY){
+                isWillDrop = FALSE;
+                acceleration = 0;
+            }
+        }
         glBegin(GL_POLYGON);
             glColor3ub(red, green, blue);
             glVertex2f(-size + x,  size + y);
@@ -26,9 +46,14 @@ public:
     }
 
     void doIfPicked(double xpos, double ypos){
-        if(((xpos < size + x) && (xpos > -size + x)) && ((ypos < size + y) && (ypos > -size + y))){
+        if(((xpos < size + x) && (xpos > -size + x)) &&
+           ((ypos < size + y) && (ypos > -size + y))){
             red = 0; green = 255; blue = 0;
             isSelected = TRUE;
+            if(isDragged == TRUE){
+                x = xpos;
+                y = ypos;
+            }
         }
         else{
             red = green = blue = 255;
@@ -49,17 +74,18 @@ public:
 
     void doIfMouseClicked(int button, int action, double posx, double posy){
         if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS){
-            //x = posx; y = posy;
-            if(isDragged == true)
-                isDragged = false;
-            else
-                isDragged  = true;
-
+            if(isSelected == true){
+                if(isDragged == true)
+                    isDragged = false;
+                else{
+                    isDragged  = true;
+                    //prevY = y;
+                    isWillDrop = TRUE;
+                }
+            }
         }
         if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
-            size++;
-
-
+            size--;
     }
 };
 
@@ -92,8 +118,8 @@ int main(void) {
     glfwSetErrorCallback(error_callback);
     if (!glfwInit())
         exit(EXIT_FAILURE);
-    //glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-    window = glfwCreateWindow(600, 600, "Interaction", NULL, NULL);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    window = glfwCreateWindow(400, 400, "Interaction", NULL, NULL);
     if (!window){
         glfwTerminate();
         exit(EXIT_FAILURE);
@@ -113,18 +139,10 @@ int main(void) {
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, width, height , 0 , 1.f, -1.f);
+        glOrtho(0, 400, 400 , 0 , 1.f, -1.f);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
 
-        /* Color Changes
-        if(rect.red > 255) rect.red = 0;
-        if(rect.green > 255) rect.green = 0;
-        if(rect.blue > 255) rect.blue = 0;
-        rect.red ++;
-        rect.green += 5;
-        rect.blue += 10;
-        */
         rect.display();
 
 

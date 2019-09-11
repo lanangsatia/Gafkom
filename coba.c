@@ -43,7 +43,7 @@ void setup_viewport(GLFWwindow* window)
 int xi=750, yi=340;
 
 
-void HurufL(double xpos=0, double ypos=0){
+void HurufL(double xpos, double ypos){
     float sudut,x,y;
     int red=255,green=255,blue=255;
 

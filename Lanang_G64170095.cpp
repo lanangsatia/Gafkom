@@ -11,7 +11,10 @@
 #include <iostream>
 
 float xi=500, yi=250;
+int transX,transY;
+
 void kotak(float x, float y, float lebar, float tinggi){        //fungsi kotak
+
         glBegin(GL_QUADS);
         glVertex2f(x,y);
         glVertex2f(x+lebar,y);
@@ -19,7 +22,14 @@ void kotak(float x, float y, float lebar, float tinggi){        //fungsi kotak
         glVertex2f(x,y+tinggi);
         glEnd();
     }
-
+void line(float x, float y, float height){
+    glLineWidth(10);
+    glBegin(GL_LINE_LOOP);
+    glColor3ub(255,255,255);
+    glVertex2f(x-xi,y-yi);
+    glVertex2f(x-xi,y+height-yi);
+    glEnd();
+    }
 void cube(float x,float y){        //fungsi cube
         glBegin(GL_POLYGON);
         glColor3ub(255,0,0);
@@ -70,6 +80,75 @@ void cube1(float x,float y){        //fungsi cube
         glVertex2f(55+x,25+y);
         glEnd();
     }
+void circle(float size){
+        int N = 180;
+        float pX, pY;
+        glBegin(GL_POLYGON);
+        for(int i = 0; i < N; i++)
+        {
+            pX = sin(i*2*3.14 / N);
+            pY = cos(i*2*3.14 / N);
+            glVertex2f(pX * size, pY * size);
+        }
+        glEnd();
+    }
+void SetengahcircleKiri(float size){
+        int N = 180;
+        float pX, pY;
+        glBegin(GL_POLYGON);
+        for(int i = 0; i < N; i++)
+        {
+            pX = -sin(i*2*3.14 / N/2);
+            pY = -cos(i*2*3.14 / N/2);
+            glVertex2f(pX * size, pY * size);
+        }
+        glEnd();
+    }
+void SetengahcircleKanan(float size){
+        int N = 180;
+        float pX, pY;
+
+        glBegin(GL_POLYGON);
+        for(int i = 0; i < N; i++)
+        {
+            pX = sin(i*2*3.14 / N/2);
+            pY = cos(i*2*3.14 / N/2);
+            glVertex2f(pX * size, pY * size);
+        }
+        glEnd();
+    }
+void yinyang(int size){
+    glRotatef(glfwGetTime()*100,0,0,1);
+    glColor3ub(0,0,0);
+    SetengahcircleKiri(size);
+
+    glColor3ub(255,255,255);
+    SetengahcircleKanan(size);
+
+    glPushMatrix();
+    glColor3ub(255,255,255);
+    glTranslatef(0,size/2,0);
+    circle(size/2);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(0,0,0);
+    glTranslatef(0,-size/2,0);
+    circle(size/2);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(255,255,255);
+    glTranslatef(0,-size/2,0);
+    circle(size/6);
+    glPopMatrix();
+
+    glPushMatrix();
+    glColor3ub(0,0,0);
+    glTranslatef(0,size/2,0);
+    circle(size/6);
+    glPopMatrix();
+}
 class LanangName{
 public:
     int red=255,green=255,blue=255,
@@ -175,17 +254,20 @@ public:
 
 void HurufL(){
     float sudut,x,y;
-
+    line(252,180,124);
     //kiri
     glColor3ub(red,green,blue);
     kotak(252-xi,180-yi,269-252,tinggi);
     //bawah
     glColor3ub(red,green,blue);
     kotak(269-xi,281-yi,322-269,23);
+
 }
 
 void HurufA(){
     float x,y;
+    line(332,180,124);
+    line(373,203,304-203);
     //kiri
     glColor3ub(redA,greenA,blueA);
     kotak(332-xi,180-yi,269-252,tinggi);
@@ -202,6 +284,8 @@ void HurufA(){
 
 void HurufN(){
     float x,y;
+    line(407,180,124);
+    line(448,203,304-203);
     //kiri
     glColor3ub(redN,greenN,blueN);
     kotak(407-xi,180-yi,269-252,tinggi);
@@ -215,6 +299,8 @@ void HurufN(){
 }
 void HurufA2(){
     float x,y;
+    line(482,180,124);
+    line(522,203,304-203);
     //kiri
     glColor3ub(redA2,greenA2,blueA2);
     kotak(482-xi,180-yi,269-252,tinggi);
@@ -231,6 +317,8 @@ void HurufA2(){
 
 void HurufN2(){
     float x,y;
+    line(559,180,124);
+    line(599,203,304-203);
     //kiri
     glColor3ub(redN2,greenN2,blueN2);
     kotak(559-xi,180-yi,269-252,tinggi);
@@ -244,6 +332,9 @@ void HurufN2(){
 
 void HurufG(){
     float x,y;
+    line(635,180,124);
+    line(680,237,260-237);
+    line(687,260,281-260);
     //kiri
     glColor3ub(redG,greenG,blueG);
     kotak(635-xi,180-yi,269-252,278-180);
@@ -262,30 +353,19 @@ void HurufG(){
 
 }
 
-
-
 void displayName(){
-    //glPushMatrix();
-    //glTranslatef(0,-80,0);
-    //glScalef(0.7,1,0);
-    //glColor3ub(255,255,255);
-    //kotak(237-xi,180-yi,740-237,313-180);
-
     HurufL();HurufA();HurufN();HurufA2();HurufN2();HurufG();
-    //kotak(0,0,300,300);
-    //glPopMatrix();
 }
 };
-
-
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GL_TRUE); // close program on ESC key
 }
-
-void setup_viewport(GLFWwindow* window)
-{
+static void cursor(GLFWwindow* window, double xpos, double ypos){
+    transX = xpos;
+    transY = ypos;
+}
+void setup_viewport(GLFWwindow* window){
     // setting viewports size, projection etc
     float ratio;
     int width, height;
@@ -300,8 +380,7 @@ void setup_viewport(GLFWwindow* window)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
-
-  void background(){               //background gajelas wkwk
+void background(){               //background gajelas wkwk
       int xx=-1000;              //lebar
       int yy=-1000;
       int red=0,green=0,blue=0;
@@ -352,12 +431,12 @@ void setup_viewport(GLFWwindow* window)
       for (int j=yy;j<=1000;j+=130){            //cube
         for(int i=xx;i<=1000;i+=130){
             glPushMatrix();
-            //glRotatef(glfwGetTime()*-2,0,0,1);
+            glRotatef(glfwGetTime()*-2,0,0,1);
             glRotatef(300,0,0,1);
             cube(i,j);
             glPopMatrix();
             glPushMatrix();
-            //glRotatef(glfwGetTime()*2,0,0,1);
+            glRotatef(glfwGetTime()*2,0,0,1);
             glTranslatef(10,0,0);
             glRotatef(30,0,0,1);
             cube1(i,j);
@@ -370,10 +449,11 @@ LanangName lanang;
 
 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos){
     lanang.doIfPicked(xpos, ypos);
+    transX = xpos;
+    transY = ypos;
 }
 
-int main(void)
-{
+int main(void){
     GLFWwindow* window;
     if (!glfwInit()) exit(EXIT_FAILURE);
 
@@ -388,15 +468,18 @@ int main(void)
     glfwSwapInterval(1);
     glfwSetKeyCallback(window, key_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
+    //glfwSetCursorPosCallback(window, cursor);
 
-
-    while (!glfwWindowShouldClose(window))
-    {
+    while (!glfwWindowShouldClose(window))    {
         setup_viewport(window);
 
         background();
         lanang.displayName();
 
+        glPushMatrix();
+        glTranslatef(transX-500,transY-250,0);
+        yinyang(20);
+        glPopMatrix();
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
